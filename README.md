@@ -3,7 +3,7 @@
 A citizen proposal for a connected, protected bike network in Decatur, Georgia, built from the
 city's own crash records and adopted plans.
 
-Open [`docs/index.html`](docs/index.html) in a browser to view the page.
+**Live page:** https://klovelace.github.io/decatur-connects/
 
 The page has an interactive map, a comparison with what the city and GDOT already plan, a crash
 analysis, and a problem-and-fix write-up for each of 12 priority intersections.
