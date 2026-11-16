@@ -1,0 +1,696 @@
+<title>Decatur Connects Bike Network</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: wayfinding-sign headers over a working planning document; the map is the centerpiece, then evidence, design rules, corridor ledger, phasing. */
+:root{
+  --bg:#f3f5f2; --paper:#ffffff; --ink:#18211d; --muted:#5b665f; --rule:#d5dbd5;
+  --accent:#0b6e57;          /* proposed protected bikeway */
+  --green:#2a62c9;           /* neighborhood greenway */
+  --side:#7b4bc4;            /* shared-use path */
+  --study:#8a8f8a;
+  --exist:#2b3430; --lane:#7d877f;
+  --bike:#e0561f; --ped:#c2185b; --hin:#f2a28a;
+  --st-local:#d3d9d2; --st-minor:#bcc4bb; --st-major:#a3ada3; --city:#e7ece6;
+  --sign:#0b6e57; --sign-fg:#ffffff;
+  --ok:#2e7d4f; --warn:#b7791f; --hi:#b3261e;
+  --s-endorse:#5a7fa8; --s-modify:#c98500; --s-new:#c42f72;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111613; --paper:#171e1a; --ink:#e4ebe5; --muted:#9aa69e; --rule:#2b352f;
+  --accent:#2fc29a; --green:#6b9cf2; --side:#b08af0; --study:#7d847f;
+  --exist:#cfd8d1; --lane:#7f8a82; --bike:#ff7a45; --ped:#f06292; --hin:#7a3b2c;
+  --st-local:#232c27; --st-minor:#2f3a34; --st-major:#3d4a42; --city:#161d19;
+  --sign:#1f8a6d; --sign-fg:#ffffff; --ok:#5cc28a; --warn:#e0a84a; --hi:#ff6b5e;
+  --s-endorse:#86a9d4; --s-modify:#f0b23a; --s-new:#f0609e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111613; --paper:#171e1a; --ink:#e4ebe5; --muted:#9aa69e; --rule:#2b352f;
+  --accent:#2fc29a; --green:#6b9cf2; --side:#b08af0; --study:#7d847f;
+  --exist:#cfd8d1; --lane:#7f8a82; --bike:#ff7a45; --ped:#f06292; --hin:#7a3b2c;
+  --st-local:#232c27; --st-minor:#2f3a34; --st-major:#3d4a42; --city:#161d19;
+  --sign:#1f8a6d; --sign-fg:#ffffff; --ok:#5cc28a; --warn:#e0a84a; --hi:#ff6b5e;
+  --s-endorse:#86a9d4; --s-modify:#f0b23a; --s-new:#f0609e; color-scheme:dark}
+*{box-sizing:border-box}
+.mode{display:flex;gap:0;margin-bottom:.8rem;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.mode button{flex:1;font:500 .8rem var(--f-body);padding:.45rem .5rem;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.st-endorse{color:var(--s-endorse)} .st-modify{color:var(--s-modify)} .st-new{color:var(--s-new)}
+.stchips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1.6rem}
+.stchip{background:var(--paper);border:1px solid var(--rule);border-top:5px solid currentColor;border-radius:4px 4px 10px 10px;padding:.9rem 1rem;display:grid;gap:.35rem;align-content:start}
+.stchip b{font-family:var(--f-display);font-size:2rem;line-height:1}
+.stchip h3{color:var(--ink)}
+.stchip p{color:var(--ink);font-size:.88rem}
+.cmp td{font-size:.85rem}
+.cmp td:first-child{min-width:11rem}
+.cmp .src{columns:auto;font-size:.78rem;color:var(--muted);margin-top:.25rem}
+@media (max-width:700px){.stchips{grid-template-columns:minmax(0,1fr)}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.05;margin:0}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:700;letter-spacing:.005em}
+h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700}
+h3{font-size:1.35rem;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.prose{max-width:68ch;display:grid;gap:.85rem}
+section{padding-block:3.2rem;border-top:1px solid var(--rule)}
+.sec-head{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.sign{display:inline-flex;align-items:center;justify-content:center;min-width:2.1rem;height:2.1rem;padding:0 .45rem;border-radius:6px;background:var(--sign);color:var(--sign-fg);font-family:var(--f-display);font-weight:700;font-size:1.25rem;border:2px solid var(--sign);box-shadow:inset 0 0 0 2px var(--paper)}
+/* hero */
+header{padding-block:3rem 2.2rem}
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:2.5rem;align-items:end}
+.hero .lede{font-size:1.12rem;max-width:58ch;margin-top:1rem;color:var(--ink)}
+.byline{margin-top:1rem;color:var(--muted);font-size:.9rem}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stat{background:var(--paper);padding:1rem 1.1rem}
+.stat b{display:block;font-family:var(--f-display);font-size:2.3rem;font-weight:700;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat span{font-size:.84rem;color:var(--muted);display:block;margin-top:.35rem;line-height:1.35}
+/* map */
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:1.2rem;align-items:start}
+.mapbox{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:10px;overflow:hidden;touch-action:none}
+#map{display:block;width:100%;height:auto;max-height:82vh;aspect-ratio:1000/1255;cursor:grab;user-select:none}
+#map.drag{cursor:grabbing}
+.zoom{position:absolute;right:10px;top:10px;display:grid;gap:4px}
+.zoom button{width:34px;height:34px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font-size:1.1rem;cursor:pointer}
+.scalebar{position:absolute;left:12px;bottom:10px;font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}
+.side{display:grid;gap:1rem;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.1rem}
+.panel h3{margin-bottom:.4rem}
+.layers{display:grid;gap:.45rem;font-size:.9rem}
+.layers label{display:flex;align-items:center;gap:.55rem;cursor:pointer}
+.sw{width:26px;height:10px;flex:none;border-radius:2px}
+.phase{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.8rem}
+.phase button{font:500 .8rem var(--f-mono);padding:.35rem .6rem;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer}
+.phase button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+#detail .k{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.7rem}
+#detail p{font-size:.92rem}
+.pill{display:inline-block;font:500 .72rem var(--f-mono);padding:.15rem .5rem;border-radius:999px;border:1px solid currentColor;margin-right:.3rem;white-space:nowrap}
+.imp-None{color:var(--ok)} .imp-Low{color:var(--ok)} .imp-Moderate{color:var(--warn)} .imp-Study{color:var(--hi)}
+.hint{color:var(--muted);font-size:.88rem}
+/* findings */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.4rem}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:1.1rem 1.2rem;display:grid;gap:.6rem;align-content:start;min-width:0}
+.bars{display:grid;gap:.45rem}
+.bar{display:grid;grid-template-columns:minmax(0,9.5rem) minmax(0,1fr) 2.2rem;gap:.6rem;align-items:center;font-size:.85rem}
+.bar .t{height:12px;background:var(--st-local);border-radius:2px;overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--bike)}
+.bar .t i.p{background:var(--ped)}
+.bar .v{font-family:var(--f-mono);text-align:right}
+.big{font-family:var(--f-display);font-weight:700;font-size:2rem;line-height:1}
+/* design */
+.xs{overflow-x:auto}
+.xs svg{display:block;min-width:620px;width:100%;height:auto}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;margin-top:1.6rem}
+.rule h3{display:flex;gap:.6rem;align-items:center}
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:.65rem .75rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--f-mono);font-weight:500;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--bg)}
+td .nm{font-weight:600}
+td .ext{color:var(--muted);font-size:.82rem}
+.matrix td,.matrix th{font-size:.86rem}
+.matrix{cursor:default}
+.matrix tbody tr{cursor:default}
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}
+.ph{border-top:4px solid var(--accent);background:var(--paper);border-radius:0 0 10px 10px;padding:1rem 1.1rem;display:grid;gap:.6rem;align-content:start;min-width:0}
+.ph ul{margin:0;padding-left:1.1rem;display:grid;gap:.3rem;font-size:.9rem}
+.ph .when{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.ixsum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin-bottom:1.4rem}
+.ixsum .stat b{font-size:2rem}
+.ixlist{display:grid;gap:1.2rem;margin-top:1.6rem}
+.ix{display:grid;grid-template-columns:250px minmax(0,1fr);gap:1.2rem;background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:1.1rem 1.2rem;scroll-margin-top:1rem}
+.ix-map svg{display:block;width:100%;height:auto;aspect-ratio:1;border:1px solid var(--rule);border-radius:8px;background:var(--city)}
+.ix-map .hint{font-size:.74rem;margin-top:.35rem;line-height:1.35}
+.ix-body{display:grid;gap:.7rem;align-content:start;min-width:0}
+.ix-head{display:flex;gap:.7rem;align-items:center}
+.ix-head .num{flex:none;width:2rem;height:2rem;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:700 1.05rem var(--f-display)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{font:500 .76rem var(--f-mono);padding:.22rem .55rem;border-radius:6px;background:var(--bg);border:1px solid var(--rule);min-width:0}
+.ix-cols>div,.ix-map{min-width:0}
+.chips{min-width:0}
+.chip b{font-weight:600}
+.chip.hot{border-color:var(--bike);color:var(--bike)}
+.ix-cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:1.2rem}
+.ix .k{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem}
+.ix ul{margin:0;padding-left:1.05rem;display:grid;gap:.4rem;font-size:.9rem}
+.fx{list-style:none;padding:0!important;gap:.55rem!important}
+.fx li{border-left:3px solid var(--accent);padding-left:.7rem;display:grid;gap:.1rem}
+.fx .f{font-weight:600}
+.fx .a{font-size:.86rem}
+.fx .a::before{content:"Fixes: ";color:var(--muted)}
+.fx .e{font-size:.78rem;color:var(--accent);font-family:var(--f-mono)}
+.fx .e.none{color:var(--muted)}
+.rt{font:500 .76rem var(--f-mono);padding:.2rem .5rem;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer}
+.rt:hover{background:var(--bg)}
+@media (max-width:820px){.ix{grid-template-columns:minmax(0,1fr)}.ix-map{max-width:300px}.ix-cols{grid-template-columns:minmax(0,1fr)}.ixsum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.src{font-size:.86rem;columns:2 340px;column-gap:2rem}
+.src li{break-inside:avoid;margin-bottom:.45rem}
+footer{padding-block:2rem 3rem;color:var(--muted);font-size:.85rem;border-top:1px solid var(--rule)}
+svg text{font-family:var(--f-body)}
+@media (max-width:900px){.hero,.mapgrid{grid-template-columns:minmax(0,1fr)}.side{position:static}.phases{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Citizen proposal · City of Decatur, Georgia · November 2026</div>
+      <h1>Decatur Connects</h1>
+      <p class="lede">A protected bike network that links all nine public schools, the Square, three MARTA stations and Oakhurst Village, with a new north–south connector on the west side. It builds on the city's adopted <a href="https://www.decaturga.com/publicworks/page/decatur-safe-streets-safety-action-plan" target="_blank" rel="noopener">Safe Streets Safety Action Plan</a> and the projects already under way. Lanes come out only where traffic volumes allow it. The busiest roads get paths beside the street instead.</p>
+      <p class="byline">Prepared from the city's 2019–2023 crash records, the 2025 Safety Action Plan, the 2018 Community Transportation Plan, 2026 project materials, and OpenStreetMap street data.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<section id="map-sec">
+  <div class="sec-head"><span class="sign">1</span><h2>The proposed network</h2></div>
+  <div class="mapgrid">
+    <div class="mapbox">
+      <svg id="map" viewBox="0 0 1000 1255" role="img" aria-label="Map of Decatur showing existing and proposed bike facilities, crash locations and schools"></svg>
+      <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="zreset" aria-label="Reset view">⟲</button></div>
+      <div class="scalebar" id="scalebar"></div>
+    </div>
+    <div class="side">
+      <div class="panel">
+        <div class="mode" role="group" aria-label="Color the map by">
+          <button data-mode="type" aria-pressed="true">Facility type</button><button data-mode="status" aria-pressed="false">vs. city plans</button>
+        </div>
+        <div class="phase" role="group" aria-label="Filter by phase">
+          <button data-ph="0" aria-pressed="true">All phases</button><button data-ph="1" aria-pressed="false">Phase 1</button><button data-ph="2" aria-pressed="false">Phase 2</button><button data-ph="3" aria-pressed="false">Phase 3</button>
+        </div>
+        <div class="layers" id="layers"></div>
+      </div>
+      <div class="panel" id="detail" aria-live="polite">
+        <h3>Select a corridor</h3>
+        <p class="hint">Click any colored line on the map or a row in the corridor table to see today's layout, the proposal, traffic volume, and the expected effect on car traffic. Drag to pan; use the buttons or scroll to zoom.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="sec-head"><span class="sign">2</span><h2>What's already planned, and what this changes</h2></div>
+  <div class="prose" style="margin-bottom:1.4rem">
+    <p>Most of this network is already in a city or GDOT plan. The sources are the 2016 PATH Connectivity Plan, the 2025 Safety Action Plan, 2026 city projects, GDOT's College Ave project, and the Scott Blvd RAISE grant. Each piece below falls into one of three groups. <a href="#map-sec" id="show-status">Show this on the map</a>.</p>
+  </div>
+  <div class="stchips" id="stchips"></div>
+  <div class="tbl"><table class="cmp">
+    <thead><tr><th>Corridor or greenway</th><th>What the city or GDOT proposes today</th><th>What this proposal changes</th></tr></thead>
+    <tbody id="cmp-body"></tbody>
+  </table></div>
+  <h3 style="margin-top:2rem;margin-bottom:.8rem">City plans carried forward but not drawn as new corridors</h3>
+  <div class="cols" id="carried"></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sign">3</span><h2>What the crash records show</h2></div>
+  <div class="prose" style="margin-bottom:1.6rem">
+    <p>Decatur recorded <b>3,451 crashes from 2019 to 2023</b>. People walking and biking were in only 3% of them but made up <b>40% of fatal and serious-injury crashes</b>. The figures below come from the city's own crash layer, the same data behind the Safety Action Plan, filtered to the 38 bicycle and 55 pedestrian crashes.</p>
+  </div>
+  <div class="cols" id="findings"></div>
+  <div class="prose" style="margin-top:1.6rem">
+    <p><b>What this means for design.</b> Most bike crashes happen where there is no bike facility and a driver is turning. A painted line does not stop a turning driver. Protected intersections and hardened turn lines do, so every corridor below includes its intersections, not only the blocks between them. The two 2023 right-hook crashes on the Church Street cycle track show that protection fails where it is interrupted by driveways. Those gaps need fixing too.</p>
+  </div>
+</section>
+
+<section id="intersections">
+  <div class="sec-head"><span class="sign">4</span><h2>Twelve intersections: the problem and the fix</h2></div>
+  <div class="prose" style="margin-bottom:1.4rem">
+    <p>85% of Decatur's serious crashes happen at intersections, so this is where the proposal is most specific. The list below was picked from the data: walking and biking crashes were grouped by location, and the worst clusters on or beside the proposed network were kept, along with two high-volume junctions where bikeways meet. Each card shows what the police reports say went wrong, what we propose, and which problem each fix answers.</p>
+  </div>
+  <div class="ixsum" id="ixsum"></div>
+  <h3 style="margin-bottom:.8rem">Three patterns that repeat</h3>
+  <div class="tbl"><table class="matrix">
+    <thead><tr><th>What went wrong</th><th>Walking and biking crashes at these sites</th><th>What we propose</th><th>Where</th></tr></thead>
+    <tbody id="ixpat"></tbody>
+  </table></div>
+  <div class="ixlist" id="ixlist"></div>
+  <p class="hint" style="margin-top:1rem">Counts include every crash within 250 ft of the centre of each intersection, 2019–2023. A crash near two listed intersections is counted once, at the nearer one. "What the crash reports show" summarises the police narratives for the walking and biking crashes. Percentages are federal averages for each treatment, not predictions for these sites.</p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sign">5</span><h2>Design rules: what the evidence supports</h2></div>
+  <div class="prose">
+    <p><b>Yes, parking cars on the outside is a recognized best practice.</b> FHWA's <i>Separated Bike Lane Planning and Design Guide</i> and NACTO's <i>Urban Bikeway Design Guide</i> both list on-street parking as a form of vertical separation. Swapping the parking lane and the bike lane, so parked cars sit between moving traffic and people on bikes, gives protection at almost no cost and keeps the parking. It works only with three details: a <b>3-ft buffer</b> so opening car doors do not hit riders, <b>daylighting</b> (no parking 20–30 ft before crosswalks and driveways) so drivers and riders can see each other, and <b>flex posts in the buffer</b> so the lane stays protected when the spaces are empty.</p>
+  </div>
+  <div class="card xs" style="margin-top:1.4rem" id="xsec"></div>
+  <div class="rules" id="rules"></div>
+  <h3 style="margin-top:2rem;margin-bottom:.8rem">Choosing a facility by street (NACTO "All Ages &amp; Abilities")</h3>
+  <div class="tbl"><table class="matrix">
+    <thead><tr><th>Street condition</th><th>Facility</th><th>Decatur streets</th><th>Effect on car traffic</th></tr></thead>
+    <tbody>
+      <tr><td>Under ~3,000 vehicles/day, 25 mph or less</td><td><b>Neighborhood greenway</b>: signs, speed humps, crossing islands, diverters where needed</td><td>Oakview Rd, Avery St, Mead Rd, Erie Ave, Electric Ave</td><td>None. Through traffic is gently discouraged.</td></tr>
+      <tr><td>3,000–6,000/day, 25–30 mph</td><td><b>Protected or buffered lane</b>, using space from narrower lanes or parking</td><td>S McDonough St, E Lake Dr, E Howard Ave</td><td>None; no lanes removed</td></tr>
+      <tr><td>Over 6,000/day or over 25 mph, up to ~20,000–25,000/day</td><td><b>Protected bike lane</b>. A 4-to-3 road diet where four lanes exist.</td><td>Clairemont Ave, Commerce Dr, Church St, W Ponce, W College Ave</td><td>Low to moderate. FHWA finds 4-to-3 conversions keep similar capacity on these volumes and cut crashes 19–47%.</td></tr>
+      <tr><td>Over ~25,000/day or 40 mph</td><td><b>Shared-use path</b> behind the curb, or a corridor study before any lane change</td><td>Scott Blvd (path), E College Ave and E Ponce (study)</td><td>None for paths. Studies decide the rest.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="ledger">
+  <div class="sec-head"><span class="sign">6</span><h2>Corridor ledger</h2></div>
+  <p class="hint" style="margin-bottom:1rem">Volumes marked "GDOT 2023" come from the Safety Action Plan. Others are estimates from the AADT field in the city's crash layer and need confirming with GDOT TADA counts. Click a row to show it on the map.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Corridor</th><th>Facility</th><th>Today</th><th>Vehicles/day</th><th>Traffic impact</th><th>Phase</th><th>Miles</th></tr></thead>
+    <tbody id="ledger-body"></tbody>
+  </table></div>
+  <h3 style="margin-top:2rem;margin-bottom:.8rem">Neighborhood greenways (school connectors)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Greenway</th><th>Connects</th><th>New greenway streets</th><th>Phase</th><th>Miles</th></tr></thead>
+    <tbody id="green-body"></tbody>
+  </table></div>
+  <p class="hint" style="margin-top:.8rem">Greenway routes were chosen by a least-stress routing over the OpenStreetMap street network. Arterials cost far more per foot than residential streets, and protected corridors cost the least. Miles count only new greenway streets; segments on existing trails or proposed corridors are not double-counted. Each route should be walked and checked with neighbors and school PTAs before it is signed.</p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sign">7</span><h2>Keeping traffic moving</h2></div>
+  <div class="cols">
+    <div class="card"><h3>No lanes removed on the busiest roads</h3><p>Scott Blvd carries about 40,000 vehicles a day and keeps all four lanes. Riders get a separate path behind the curb. E College Ave and E Ponce de Leon Ave, at 23,000–28,000 a day, go to GDOT and city corridor studies before any lane changes.</p></div>
+    <div class="card"><h3>Road diets only where volumes fit</h3><p>The 4-to-3 conversions are on Clairemont (19,300), Commerce (12,500–13,000) and downtown Church St. All are within the range where FHWA finds a center turn lane offsets the lost through lane, because left-turning cars no longer block the inside lane.</p></div>
+    <div class="card"><h3>Parking kept, not removed</h3><p>Parking-protected layouts on W Ponce and Church St keep the parking or add to it; the Church St option adds 9–11 spaces. Removing parking is a last resort, used only at daylighted corners.</p></div>
+    <div class="card"><h3>Build cheap first, then measure</h3><p>Phase 1 uses paint, posts and planters, as Decatur did on W Howard in 2018 and plans for Church St. Travel times, speeds and bike counts get measured for 6–12 months before concrete is poured, so any problem can be fixed for little cost.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sign">8</span><h2>Phasing and funding</h2></div>
+  <div class="phases" id="phases"></div>
+  <div class="prose" style="margin-top:1.6rem">
+    <p><b>Funding paths.</b> Adopting the Safety Action Plan made Decatur eligible for <b>SS4A Implementation grants</b>, which fit the HIN corridors (Clairemont, Commerce, E College). Scott Blvd already has a <b>$1.87M RAISE planning grant</b>. State routes (Clairemont, Commerce, College, Scott) can go through <b>GDOT Quick Response and safety programs</b>. Greenways and quick-builds fit <b>ARC Transportation Alternatives</b> and the city's capital and SPLOST budget. The S McDonough–Oakview spine is already in the adopted PATH plan.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sign">9</span><h2>Sources and method</h2></div>
+  <ul class="src">
+    <li><a href="https://www.decaturga.com/publicworks/page/decatur-safe-streets-safety-action-plan" target="_blank" rel="noopener">Decatur Safe Streets Safety Action Plan</a> (adopted June 2025): High Injury Network, corridor recommendations, AADT for Clairemont and Commerce.</li>
+    <li><a href="https://services.arcgis.com/36QtML6Mf01B1N0W/arcgis/rest/services/High_Injury_Network_Data/FeatureServer" target="_blank" rel="noopener">City of Decatur High Injury Network crash layer</a>: 3,451 crashes, 2019–2023, with bicycle and pedestrian flags.</li>
+    <li><a href="https://www.decaturga.com/publicworks/page/church-street-and-clairemont-avenue-safety-improvements-quick-build" target="_blank" rel="noopener">Church St &amp; Clairemont Ave Quick-build</a> (Feb 2026 public meeting).</li>
+    <li><a href="https://www.decaturga.com/publicworks/page/west-ponce-de-leon-avenue-speed-management-project" target="_blank" rel="noopener">West Ponce de Leon Ave Safety Improvements</a> (2026; Alternative 2 parking-protected lanes).</li>
+    <li><a href="https://www.decaturga.com/publicworks/page/west-howard-avenue-cycle-track-and-traffic-calming-improvements" target="_blank" rel="noopener">West Howard Ave Cycle Track</a> (built 2025–26).</li>
+    <li><a href="https://www.decaturga.com/publicworks/page/east-lake-drive-maintenance-and-safety-improvements" target="_blank" rel="noopener">East Lake Drive Maintenance &amp; Safety</a> and <a href="https://www.decaturga.com/publicworks/page/south-mcdonough-street-speed-management" target="_blank" rel="noopener">S McDonough St Speed Management</a>.</li>
+    <li><a href="https://www.decaturga.com/planning/page/transportation-planning" target="_blank" rel="noopener">Decatur Community Transportation Plan (2018)</a> and <a href="https://www.decaturga.com/planning/page/path-connectivity-implementation-plan-2016" target="_blank" rel="noopener">PATH Connectivity &amp; Implementation Plan (2016)</a>: segments #1–#7, used for the plan comparison.</li>
+    <li><a href="https://www.decaturga.com/publicworks/page/open-house-and-workshop-re-imagine-west-howard-ave-sequel-and-rr-crossing-atlanta" target="_blank" rel="noopener">Railroad Crossing Improvements at Atlanta Ave</a>: 2019 concept that moves the crossing to Adair St, with a new signal at W College Ave and Olympic Pl.</li>
+    <li><a href="https://www.gacities.com/articles/six-georgia-cities-awarded-federal-infrastructure-grants" target="_blank" rel="noopener">RAISE award for Scott Boulevard</a> (Georgia Municipal Association).</li>
+    <li><a href="https://www.pedbikeinfo.org/resources/resources_details.php?id=4935" target="_blank" rel="noopener">FHWA Separated Bike Lane Planning and Design Guide</a>.</li>
+    <li><a href="https://highways.dot.gov/safety/proven-safety-countermeasures" target="_blank" rel="noopener">FHWA Proven Safety Countermeasures</a>: crash-reduction figures for leading pedestrian intervals, refuge islands, crosswalk visibility, lighting, beacons, roundabouts and access management.</li>
+    <li><a href="https://www.pedbikeinfo.org/resources/resources_details.php?id=5993" target="_blank" rel="noopener">FHWA fact sheets on road diets and bicycle lanes</a> (FHWA-HRT-10-053; FHWA-SA-21-051). These two pages are no longer on the FHWA site, so the figures are taken from archived copies of the fact sheets.</li>
+    <li><a href="https://nacto.org/publication/urban-bikeway-design-guide/designing-ages-abilities-new/" target="_blank" rel="noopener">NACTO, Designing for All Ages &amp; Abilities</a> and <a href="https://nacto.org/publication/dont-give-up-at-the-intersection/" target="_blank" rel="noopener">Don't Give Up at the Intersection</a>.</li>
+    <li>Marshall &amp; Ferenchak (2019), <a href="https://doi.org/10.1016/j.jth.2019.03.004" target="_blank" rel="noopener">Why cities with high bicycling rates are safer for all road users</a>, <i>J. Transport &amp; Health</i>.</li>
+    <li>Teschke et al. (2012), <a href="https://doi.org/10.2105/AJPH.2012.300762" target="_blank" rel="noopener">Route infrastructure and the risk of injuries to bicyclists</a>, <i>Am. J. Public Health</i>.</li>
+    <li>Street geometry, existing bike facilities, schools and parks: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL).</li>
+  </ul>
+  <div class="prose" style="margin-top:1.4rem">
+    <p class="hint"><b>Method and limits.</b> Corridors were snapped to OpenStreetMap streets and measured along the street. A crash counts as "on the network" if it lies within 40 m (130 ft) of a proposed route. School access is measured as the straight-line distance from each school to the nearest protected bikeway, trail or greenway. OSM may not show every existing facility, such as the newest W Howard cycle track. Traffic volumes other than Clairemont and Commerce are planning estimates. This is a citizen proposal for discussion, not an engineering design. Every corridor needs survey, traffic analysis, and GDOT review where it is a state route.</p>
+  </div>
+</section>
+</div>
+<footer><div class="wrap">Decatur Connects · a community proposal for discussion with the City of Decatur Active Transportation and Public Works staff, the Safe Streets Working Group, City Schools of Decatur, and GDOT District 7.</div></footer>
+
+<script>
+const DATA = __DATA__;
+const NS = 'http://www.w3.org/2000/svg';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TYPE = {protected:{label:'Protected bike lane', c:'var(--accent)'}, sidepath:{label:'Shared-use path', c:'var(--side)'}, study:{label:'Corridor study', c:'var(--study)'}, greenway:{label:'Neighborhood greenway', c:'var(--green)'}, connector:{label:'Greenway spine + new rail crossing', c:'var(--green)'}};
+const STATUS = {endorse:{label:'Already proposed', short:'Endorsed as proposed', c:'var(--s-endorse)', blurb:'A city, PATH or GDOT plan already proposes this. This proposal backs it, at most picking among the city\'s own options or adding design detail.'},
+                modify:{label:'Builds on a city plan', short:'Changed or extended', c:'var(--s-modify)', blurb:'A plan exists, but this proposal changes the design, extends the limits, or moves it earlier.'},
+                new:{label:'New in this proposal', short:'New', c:'var(--s-new)', blurb:'Not in any adopted city, PATH or GDOT plan.'}};
+const SHORT = {C1:'Clairemont Ave',C2:'Church St',C3:'Commerce Dr',C4:'S McDonough–Oakview',C5:'W College Ave',C6:'E College Ave',C7:'W Ponce',C8:'E Ponce (study)',C9:'Scott Blvd path',C10:'E Lake Dr',C11:'E Trinity–E Howard',C12:'West Side Connector'};
+const M = DATA.metrics;
+const all = [...DATA.corridors, ...DATA.greenways];
+let mode = 'type';
+const colorOf = it => mode === 'status' ? STATUS[it.status].c : TYPE[it.type].c;
+
+/* ---------- stats ---------- */
+const totalNew = (M.miles.protected + M.miles.sidepath + M.miles.connector + M.miles.greenway).toFixed(1);
+$('#stats').innerHTML = [
+  [`${M.pub_after}/${M.public_schools}`, `public schools within ¼ mi of a low-stress route (${M.pub_before} today)`],
+  [`${totalNew} mi`, `of new protected lanes, paths and greenways in ${DATA.corridors.length} corridors and ${DATA.greenways.length} greenways`],
+  [`${M.bike.on}/${M.bike.total}`, `2019–23 bike crashes on a proposed route, incl. ${M.bike.fsi_on} of ${M.bike.fsi} serious`],
+  [`${DATA.intsum.vru}/${DATA.intsum.vru_all}`, `walking and biking crashes happened at ${DATA.intsum.n} intersections, each with a specific fix below`],
+].map(([b,s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
+
+/* ---------- map ---------- */
+const svg = $('#map');
+const [VW, VH] = DATA.view;
+svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const g = id => el('g', {id}, svg);
+const L = {city:g('l-city'), base:g('l-base'), hin:g('l-hin'), exist:g('l-exist'), prop:g('l-prop'), labels:g('l-labels'), crash:g('l-crash'), ints:g('l-ints'), poi:g('l-poi')};
+const ln = (d, stroke, w, extra={}, parent) => el('path', Object.assign({d, fill:'none', stroke, 'stroke-width':w, 'stroke-linecap':'round', 'stroke-linejoin':'round', 'vector-effect':'non-scaling-stroke'}, extra), parent);
+el('path', {d:DATA.city, fill:'var(--city)', stroke:'var(--muted)', 'stroke-width':1.2, 'stroke-dasharray':'6 4', 'vector-effect':'non-scaling-stroke'}, L.city);
+ln(DATA.base.local, 'var(--st-local)', .8, {}, L.base);
+ln(DATA.base.minor, 'var(--st-minor)', 1.4, {}, L.base);
+ln(DATA.base.major, 'var(--st-major)', 2.4, {}, L.base);
+ln(DATA.hin, 'var(--hin)', 9, {opacity:.6}, L.hin);
+ln(DATA.existing.trail, 'var(--exist)', 2.2, {}, L.exist);
+ln(DATA.existing.track, 'var(--exist)', 2.2, {}, L.exist);
+ln(DATA.existing.lane, 'var(--lane)', 1.6, {'stroke-dasharray':'3 3'}, L.exist);
+
+const segEls = {}, colorEls = {};
+function drawProp(item) {
+  const t = TYPE[item.type];
+  const grp = el('g', {class:'seg', 'data-id':item.id, 'data-ph':item.phase, tabindex:0, role:'button', 'aria-label':item.name}, L.prop);
+  const thin = item.type === 'greenway';
+  const w = thin ? 3.2 : item.type === 'connector' ? 4.2 : 5;
+  ln(item.d, 'var(--paper)', thin ? 6 : 8.5, {}, grp);
+  colorEls[item.id] = [ln(item.d, t.c, w, thin ? {'stroke-dasharray':'1 5.5'} : (item.type === 'study' ? {'stroke-dasharray':'8 5'} : {}), grp)];
+  if (item.dPlan) {
+    ln(item.dPlan, 'var(--paper)', 11, {}, grp);
+    colorEls[item.id].push(ln(item.dPlan, t.c, 7, {'stroke-linecap':'butt', 'stroke-dasharray':'3 2'}, grp));
+    const m = item.dPlan.match(/M([\d.]+),([\d.]+)/);
+    if (m) { const tx = el('text', {x:+m[1] + 12, y:+m[2] + 16, 'font-size':11, 'font-style':'italic', fill:'var(--ink)', stroke:'var(--paper)', 'stroke-width':3, 'paint-order':'stroke'}, grp); tx.textContent = 'new Adair St rail crossing'; }
+  }
+  const hit = ln(item.d + (item.dPlan || ''), 'transparent', 16, {'pointer-events':'stroke'}, grp);
+  grp.style.cursor = 'pointer';
+  grp.addEventListener('click', e => { e.stopPropagation(); select(item.id); });
+  grp.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(item.id); } });
+  segEls[item.id] = grp;
+}
+DATA.greenways.forEach(drawProp);
+DATA.corridors.forEach(drawProp);
+
+// corridor labels at path midpoints
+DATA.corridors.forEach(c => {
+  const p = segEls[c.id].querySelector('path');
+  const len = p.getTotalLength(); if (!len) return;
+  const a = p.getPointAtLength(len * .5);
+  const tx = el('text', {x:a.x + 9, y:a.y + 4, 'font-size':13, 'font-weight':600, fill:'var(--ink)', stroke:'var(--paper)', 'stroke-width':3.5, 'paint-order':'stroke', 'data-ph':c.phase, class:'lbl', 'data-id':c.id}, L.labels);
+  tx.textContent = SHORT[c.id];
+});
+
+// crashes
+DATA.crashes.slice().sort((a,b) => (a.s==='A'||a.s==='K') - (b.s==='A'||b.s==='K')).forEach(c => {
+  const sev = c.s === 'K' || c.s === 'A';
+  const col = c.m === 'Bike' ? 'var(--bike)' : 'var(--ped)';
+  const ci = el('circle', {cx:c.x, cy:c.y, r: sev ? 6 : 3.4, fill: sev ? col : 'var(--paper)', stroke: col, 'stroke-width': sev ? 1.5 : 1.6, 'vector-effect':'non-scaling-stroke', class: 'cr cr-' + c.m}, L.crash);
+  const sevTxt = {K:'Fatal',A:'Serious injury',B:'Minor injury',C:'Possible injury',O:'No injury'}[c.s] || c.s;
+  el('title', {}, ci).textContent = `${c.m === 'Bike' ? 'Bicycle' : 'Pedestrian'} crash, ${c.yr}: ${sevTxt}\n${c.rd} @ ${c.xr}\nDriver: ${c.mv || 'n/a'} · ${c.loc} · ${c.sp} mph`;
+});
+
+// priority intersections (numbered by rank; click jumps to the card)
+DATA.ints.forEach(h => {
+  const gg = el('g', {class:'hs', tabindex:0, role:'link', 'aria-label':`Intersection ${h.rank}: ${h.n}`}, L.ints);
+  gg.style.cursor = 'pointer';
+  el('circle', {cx:h.x, cy:h.y, r:11, fill:'var(--ink)', stroke:'var(--paper)', 'stroke-width':2, 'vector-effect':'non-scaling-stroke'}, gg);
+  const t = el('text', {x:h.x, y:h.y + 4.5, 'text-anchor':'middle', 'font-size':12.5, 'font-weight':700, fill:'var(--bg)'}, gg);
+  t.textContent = h.rank;
+  el('title', {}, gg).textContent = `${h.rank}. ${h.n}: ${h.st.vru} walking/biking crashes, ${h.st.total} total`;
+  const go = e => { e.stopPropagation(); const c = document.getElementById('ix-' + h.id); if (c) c.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); };
+  gg.addEventListener('click', go);
+  gg.addEventListener('keydown', e => { if (e.key === 'Enter') go(e); });
+});
+
+// schools + destinations
+DATA.schools.forEach(s => {
+  const gg = el('g', {class:'poi-s'}, L.poi);
+  const r = s.k === 'public' ? 7 : 5.5;
+  el('rect', {x:s.x - r, y:s.y - r, width:r*2, height:r*2, rx:2, fill: s.k === 'public' ? 'var(--ink)' : 'var(--paper)', stroke:'var(--ink)', 'stroke-width':1.6, 'vector-effect':'non-scaling-stroke'}, gg);
+  const t = el('text', {x:s.x + r + 4, y:s.y + 4, 'font-size': s.k === 'public' ? 12.5 : 11, 'font-weight': s.k === 'public' ? 600 : 400, fill:'var(--ink)', stroke:'var(--paper)', 'stroke-width':3, 'paint-order':'stroke'}, gg);
+  t.textContent = s.n;
+});
+DATA.dest.filter(d => d.n !== 'Decatur MARTA').forEach(d => {
+  const gg = el('g', {class:'poi-d'}, L.poi);
+  const sz = 6;
+  el('path', {d:`M${d.x},${d.y-sz} L${d.x+sz},${d.y} L${d.x},${d.y+sz} L${d.x-sz},${d.y} Z`, fill: d.k === 'transit' ? 'var(--green)' : 'var(--paper)', stroke: d.k === 'transit' ? 'var(--green)' : 'var(--muted)', 'stroke-width':1.6, 'vector-effect':'non-scaling-stroke'}, gg);
+  const t = el('text', {x:d.x + 9, y:d.y + 4, 'font-size':11, 'font-style':'italic', fill:'var(--muted)', stroke:'var(--paper)', 'stroke-width':3, 'paint-order':'stroke'}, gg);
+  t.textContent = d.n === 'Decatur Square' ? 'Decatur Square · MARTA' : d.n;
+});
+
+/* layers */
+const LAYERS = [
+  ['prop', 'Proposed protected lanes', `background:var(--accent)`, true],
+  ['green', 'Proposed greenways', `background:repeating-linear-gradient(90deg,var(--green) 0 3px,transparent 3px 7px)`, true],
+  ['exist', 'Existing trails & cycle tracks', `background:var(--exist);height:4px`, true],
+  ['hin', 'High Injury Network (city)', `background:var(--hin)`, true],
+  ['crashBike', 'Bike crashes 2019–23', `background:var(--bike);border-radius:50%;width:10px`, true],
+  ['crashPed', 'Pedestrian crashes 2019–23', `background:var(--ped);border-radius:50%;width:10px`, false],
+  ['ints', 'Priority intersections', `background:var(--ink);border-radius:50%;width:12px;height:12px`, true],
+  ['poi', 'Schools & destinations', `background:var(--ink);width:10px`, true],
+];
+const lstate = {};
+$('#layers').innerHTML = LAYERS.map(([k,l,s,on]) => `<label><input type="checkbox" id="ly-${k}" ${on?'checked':''}><span class="sw" style="${s}"></span>${l}</label>`).join('')
+  + `<div class="hint" id="legend-note" style="margin-top:.3rem;font-size:.8rem"></div>`;
+const NOTE = {
+  type: 'Filled dot = serious injury or fatal. Purple = Scott Blvd shared-use path; grey dashed = corridor study; solid blue = West Side Connector.',
+  status: Object.values(STATUS).map(s => `<span style="display:inline-flex;align-items:center;gap:.35rem;margin-right:.7rem"><span class="sw" style="background:${s.c};width:18px"></span>${s.label}</span>`).join('') + '<br>Dotted lines are greenways. Grey solid lines are already built.'
+};
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
+  all.forEach(it => colorEls[it.id].forEach(p => p.setAttribute('stroke', colorOf(it))));
+  $('#legend-note').innerHTML = NOTE[m];
+  if (selected) select(selected);
+}
+document.querySelectorAll('.mode button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+let phase = 0;
+function applyLayers() {
+  LAYERS.forEach(([k]) => lstate[k] = $('#ly-' + k).checked);
+  L.hin.style.display = lstate.hin ? '' : 'none';
+  L.exist.style.display = lstate.exist ? '' : 'none';
+  L.ints.style.display = lstate.ints ? '' : 'none';
+  L.poi.style.display = lstate.poi ? '' : 'none';
+  svg.querySelectorAll('.cr-Bike').forEach(e => e.style.display = lstate.crashBike ? '' : 'none');
+  svg.querySelectorAll('.cr-Ped').forEach(e => e.style.display = lstate.crashPed ? '' : 'none');
+  all.forEach(it => {
+    const isG = it.type === 'greenway';
+    const vis = (isG ? lstate.green : lstate.prop) && (phase === 0 || it.phase === phase);
+    segEls[it.id].style.display = vis ? '' : 'none';
+  });
+  svg.querySelectorAll('.lbl').forEach(t => t.style.display = (lstate.prop && (phase === 0 || +t.dataset.ph === phase)) ? '' : 'none');
+}
+LAYERS.forEach(([k]) => $('#ly-' + k).addEventListener('change', applyLayers));
+document.querySelectorAll('.phase button').forEach(b => b.addEventListener('click', () => {
+  phase = +b.dataset.ph;
+  document.querySelectorAll('.phase button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  applyLayers();
+}));
+applyLayers();
+
+/* select */
+let selected = null;
+function select(id, scroll) {
+  selected = id;
+  all.forEach(it => { segEls[it.id].style.opacity = (id && it.id !== id) ? .35 : 1; });
+  if (id) L.prop.appendChild(segEls[id]);
+  const it = all.find(x => x.id === id);
+  const d = $('#detail');
+  if (!it) { return; }
+  const t = TYPE[it.type];
+  const S = STATUS[it.status];
+  const plan = `<div class="k">City / GDOT plan today</div><p><span class="pill" style="color:${S.c}">${S.label}</span></p><p style="margin-top:.3rem">${esc(it.city)}</p><p class="hint" style="font-size:.78rem">${esc(it.src)}</p>
+      <div class="k">What this proposal changes</div><p>${esc(it.change)}</p>`;
+  if (it.type === 'greenway') {
+    d.innerHTML = `<div class="eyebrow">${it.id} · Phase ${it.phase}</div><h3>${esc(it.name)}</h3>
+      <span class="pill" style="color:var(--green)">${t.label}</span><span class="pill imp-None">Traffic impact: none</span>
+      ${plan}
+      <div class="k">Connects</div><p>${it.links.map(esc).join(' → ')}</p>
+      <div class="k">New greenway streets</div><p>${it.via.map(esc).join(', ') || 'Uses trails and proposed corridors'}</p>
+      <div class="k">Treatment</div><p>Wayfinding signs and sharrows, speed humps or tables every 300–500 ft, raised crossings or refuge islands where the route crosses an arterial, and a diverter if cut-through traffic exceeds ~1,500 cars/day.</p>
+      <div class="k">Length (new streets)</div><p class="mono">${it.miles} mi</p>`;
+  } else {
+    d.innerHTML = `<div class="eyebrow">${it.id} · Phase ${it.phase} · ${esc(it.owner)}</div><h3>${esc(it.name)}</h3><p class="hint" style="margin-bottom:.4rem">${esc(it.ext)}</p>
+      <span class="pill" style="color:${t.c}">${t.label}</span><span class="pill imp-${it.impact}">Traffic impact: ${it.impact === 'Study' ? 'study first' : it.impact.toLowerCase()}</span>
+      ${plan}
+      <div class="k">Today</div><p>${esc(it.today)}</p>
+      <div class="k">Proposal</div><p>${esc(it.proposal)}</p>
+      <div class="k">Effect on car traffic</div><p>${esc(it.impactNote)}</p>
+      <div class="k">Vehicles per day</div><p class="mono">${esc(it.aadt)}</p>
+      <div class="k">Serves</div><p>${esc(it.serves)}</p>
+      <div class="k">Length</div><p class="mono">${it.miles} mi</p>`;
+  }
+  if (scroll) document.getElementById('map-sec').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+}
+svg.addEventListener('click', () => { if (!moved) { selected = null; all.forEach(it => segEls[it.id].style.opacity = 1); } });
+
+/* pan / zoom */
+// open on the proposed network rather than the whole map extent
+const HOME = (() => { try { const bb = L.prop.getBBox(), pad = 45; let w = Math.max(bb.width + 2 * pad, (bb.height + 2 * pad) * VW / VH); w = Math.min(w, VW); const h = w * VH / VW; return {x: bb.x + bb.width / 2 - w / 2, y: bb.y + bb.height / 2 - h / 2, w, h}; } catch (e) { return {x:0, y:0, w:VW, h:VH}; } })();
+let vb = {...HOME};
+const setVB = () => { svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); updateScale(); };
+function zoomAt(f, cx, cy) {
+  const nw = Math.min(VW * 1.05, Math.max(VW / 8, vb.w * f)); const k = nw / vb.w;
+  vb.x = cx - (cx - vb.x) * k; vb.y = cy - (cy - vb.y) * k; vb.w = nw; vb.h = vb.h * k; setVB();
+}
+const center = () => [vb.x + vb.w / 2, vb.y + vb.h / 2];
+$('#zin').onclick = () => zoomAt(.7, ...center());
+$('#zout').onclick = () => zoomAt(1 / .7, ...center());
+$('#zreset').onclick = () => { vb = {...HOME}; setVB(); };
+function svgPt(e) { const r = svg.getBoundingClientRect(); return [vb.x + (e.clientX - r.left) / r.width * vb.w, vb.y + (e.clientY - r.top) / r.height * vb.h]; }
+svg.addEventListener('wheel', e => { e.preventDefault(); zoomAt(e.deltaY > 0 ? 1.15 : 1 / 1.15, ...svgPt(e)); }, {passive:false});
+let drag = null, moved = false;
+const pts = new Map(); let pinch0 = null;
+svg.addEventListener('pointerdown', e => { pts.set(e.pointerId, e); moved = false; if (pts.size === 1) { drag = {x:e.clientX, y:e.clientY, vx:vb.x, vy:vb.y}; } else if (pts.size === 2) { const [a,b] = [...pts.values()]; pinch0 = {d:Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY), w:vb.w}; drag = null; } });
+svg.addEventListener('pointermove', e => {
+  if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, e);
+  const r = svg.getBoundingClientRect();
+  if (pts.size === 2 && pinch0) { const [a,b] = [...pts.values()]; const d = Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY); const mid = svgPt({clientX:(a.clientX+b.clientX)/2, clientY:(a.clientY+b.clientY)/2}); zoomAt((pinch0.w * pinch0.d / d) / vb.w, ...mid); moved = true; return; }
+  if (!drag) return;
+  const dx = (e.clientX - drag.x) / r.width * vb.w, dy = (e.clientY - drag.y) / r.height * vb.h;
+  if (Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 4) { moved = true; svg.classList.add('drag'); try { svg.setPointerCapture(e.pointerId); } catch (_) {} }
+  if (moved) { vb.x = drag.vx - dx; vb.y = drag.vy - dy; setVB(); }
+});
+const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch0 = null; if (!pts.size) { drag = null; svg.classList.remove('drag'); } };
+svg.addEventListener('pointerup', up); svg.addEventListener('pointercancel', up);
+svg.addEventListener('click', e => { if (moved) e.stopPropagation(); }, true);
+// scale bar: 1 SVG unit in metres derived from projection (1000 units = map width)
+const M_PER_UNIT = DATA.mPerUnit;
+function updateScale() {
+  const r = svg.getBoundingClientRect(); if (!r.width) return;
+  const mPerPx = vb.w / r.width * M_PER_UNIT;
+  const target = mPerPx * 90; const opts = [100, 200, 402, 805, 1609]; const lab = {100:'100 m',200:'200 m',402:'¼ mi',805:'½ mi',1609:'1 mi'};
+  const m = opts.reduce((a, b) => Math.abs(b - target) < Math.abs(a - target) ? b : a);
+  $('#scalebar').innerHTML = `<div style="width:${(m / mPerPx).toFixed(0)}px;height:6px;border:1.5px solid var(--muted);border-top:0"></div>${lab[m]}`;
+}
+addEventListener('resize', updateScale); setVB();
+
+/* ---------- findings ---------- */
+const bike = DATA.crashes.filter(c => c.m === 'Bike'), ped = DATA.crashes.filter(c => c.m === 'Ped');
+const cnt = (arr, f) => arr.filter(f).length;
+function bars(rows, total, cls='') { const mx = Math.max(...rows.map(r => r[1])); return `<div class="bars">${rows.map(([l, v]) => `<div class="bar"><span>${l}</span><span class="t"><i class="${cls}" style="width:${(v / mx * 100).toFixed(0)}%"></i></span><span class="v">${v}</span></div>`).join('')}</div>`; }
+const TOP = Object.entries(bike.reduce((a, c) => { const k = c.rd.replace(/^\d+\s+/, '').replace(/ Sr\d+/, '').replace(/ Av$/, ' Ave'); a[k] = (a[k] || 0) + 1; return a; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 6);
+const turning = cnt(bike, c => /Turning|U-Turn/.test(c.mv));
+$('#findings').innerHTML = `
+ <div class="card"><div class="eyebrow">Bicycle crashes · what the driver was doing</div><div class="big">${turning} of ${bike.length}</div><p>bike crashes involved a turning driver. Protected intersections address this; paint does not.</p>
+  ${bars([['Turning left or U-turn', cnt(bike, c => /Left|U-Turn/.test(c.mv))], ['Turning right', cnt(bike, c => /Right/.test(c.mv))], ['Going straight', cnt(bike, c => c.mv === 'Straight')], ['Changing lanes or passing', cnt(bike, c => /Changing|Passing/.test(c.mv))], ['Driveway or backing', cnt(bike, c => /Driveway|Backing/.test(c.mv))]])}</div>
+ <div class="card"><div class="eyebrow">Bicycle crashes · where and how fast</div><div class="big">${cnt(bike, c => c.sp === '35')} of ${bike.length}</div><p>happened on 35 mph streets, and ${cnt(bike, c => /Intersection/.test(c.loc))} were at intersections. Only 4 happened inside a bike lane, and none of the serious ones was on a protected facility.</p>
+  ${bars([['35 mph', cnt(bike, c => c.sp === '35')], ['30 mph', cnt(bike, c => c.sp === '30')], ['25 mph', cnt(bike, c => c.sp === '25')]])}</div>
+ <div class="card"><div class="eyebrow">Pedestrian crashes · the left-turn problem</div><div class="big">${cnt(ped, c => /Left/.test(c.mv))} of ${ped.length}</div><p>pedestrian crashes involved a left-turning driver, and ${cnt(ped, c => c.s === 'A' || c.s === 'K')} were fatal or serious. Narrower, slower crossings help walkers and riders alike.</p>
+  ${bars([['Driver turning left', cnt(ped, c => /Left/.test(c.mv))], ['Going straight', cnt(ped, c => c.mv === 'Straight')], ['Turning right', cnt(ped, c => /Right/.test(c.mv))], ['Other or unknown', cnt(ped, c => !/Left|Right|Straight/.test(c.mv))]], ped.length, 'p')}</div>
+ <div class="card"><div class="eyebrow">Streets with the most bike crashes</div><div class="big">${TOP[0][0]}</div><p>leads with ${TOP[0][1]}, followed by the downtown edge (W Ponce/W Trinity, Atlanta Ave/W Howard, E Trinity/E Howard) and the Commerce Dr curves.</p>
+  ${bars(TOP)}</div>`;
+
+/* ---------- cross-section ---------- */
+(function(){
+  const parts = [['Sidewalk', 8, 'var(--st-minor)'], ['Bike lane', 6, 'var(--accent)'], ['Buffer + posts', 3, 'var(--hin)'], ['Parking', 8, 'var(--st-major)'], ['Travel lane', 10, 'var(--st-local)'], ['Travel lane', 10, 'var(--st-local)'], ['Parking', 8, 'var(--st-major)'], ['Buffer + posts', 3, 'var(--hin)'], ['Bike lane', 6, 'var(--accent)'], ['Sidewalk', 8, 'var(--st-minor)']];
+  const tot = parts.reduce((a, p) => a + p[1], 0), W = 900, s = W / tot; let x = 0;
+  let o = `<svg viewBox="0 -34 ${W} 150" role="img" aria-label="Cross-section of a 54-foot curb-to-curb street with parking-protected bike lanes">`;
+  o += `<text x="0" y="-16" font-size="13" font-weight="600" fill="var(--ink)">Parking-protected bike lanes on an illustrative 54-ft curb-to-curb street (like W Ponce Alternative 2; actual widths vary)</text>`;
+  parts.forEach(([l, w, c], i) => {
+    const pw = w * s;
+    o += `<rect x="${x}" y="0" width="${pw}" height="56" fill="${c}" stroke="var(--paper)" stroke-width="1.5"/>`;
+    if (l === 'Parking') o += `<rect x="${x + pw*.15}" y="14" width="${pw*.7}" height="28" rx="5" fill="var(--paper)" stroke="var(--muted)"/>`;
+    if (l === 'Bike lane') o += `<circle cx="${x + pw/2 - 7}" cy="34" r="7" fill="none" stroke="var(--paper)" stroke-width="2"/><circle cx="${x + pw/2 + 7}" cy="34" r="7" fill="none" stroke="var(--paper)" stroke-width="2"/>`;
+    if (l.startsWith('Buffer')) o += `<rect x="${x + pw/2 - 2}" y="8" width="4" height="40" rx="2" fill="var(--ink)"/>`;
+    o += `<text x="${x + pw/2}" y="76" text-anchor="middle" font-size="11.5" fill="var(--ink)">${l.replace(' + posts','')}</text><text x="${x + pw/2}" y="92" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--muted)">${w} ft</text>`;
+    x += pw;
+  });
+  o += `<line x1="${W/2}" y1="0" x2="${W/2}" y2="56" stroke="var(--warn)" stroke-width="2" stroke-dasharray="6 5"/>`;
+  o += `<text x="0" y="112" font-size="11.5" fill="var(--muted)">Curb-to-curb width = 54 ft. Moving cars never touch the bike lane, and opening doors fall into the 3-ft buffer.</text></svg>`;
+  $('#xsec').innerHTML = o;
+})();
+
+/* ---------- rules ---------- */
+const RULES = [
+  ['Separate, don\'t paint', 'Physical separation (curbs, parked cars, posts, planters) is what lets an 8-year-old or a 70-year-old ride. Cycle tracks had about one-ninth the injury risk of busy streets with parked cars and no bike facility (Teschke et al., 2012). Cities that built separated lanes saw fewer road deaths for everyone (Marshall & Ferenchak, 2019).'],
+  ['Protect the intersection', 'Corner refuge islands, set-back crossings and bike signal phases control the turning conflicts behind most of Decatur\'s bike crashes. Pair them with no right on red, which the Safety Action Plan already proposes for 12 downtown intersections.'],
+  ['Mind every driveway', 'The Church St cycle track had two right-hook crashes at one side-street exit in 2023. Use raised crossings, green conflict markings, yield signs and tighter radii wherever protection is interrupted.'],
+  ['Right-size lanes before removing them', '10–11 ft lanes on a 35 mph street lower speeds and free 4–8 ft without dropping a lane. Use that space first, then road diets where volumes allow.'],
+  ['Use the quiet streets', 'Decatur\'s grid of 25 mph residential streets is its cheapest network. Greenways add signs, speed humps and safe arterial crossings, and children get school routes away from traffic.'],
+  ['Six-foot lanes, two-way where useful', 'City staff already plan 6-ft one-way lanes, a foot over minimum, for cargo bikes and side-by-side riding. Use two-way tracks (10–12 ft) along the railroad and on one-sided corridors such as W Howard and S McDonough.'],
+];
+$('#rules').innerHTML = RULES.map(([h, p], i) => `<div class="card rule"><h3><span class="sign" style="font-size:1rem;min-width:1.7rem;height:1.7rem">${String.fromCharCode(65 + i)}</span>${h}</h3><p>${p}</p></div>`).join('');
+
+/* ---------- compare with city plans ---------- */
+const stPill = it => `<span class="pill" style="color:${STATUS[it.status].c}">${STATUS[it.status].short}</span>`;
+$('#stchips').innerHTML = Object.entries(STATUS).map(([k, s]) => {
+  const items = all.filter(x => x.status === k); const mi = items.reduce((a, b) => a + b.miles, 0);
+  return `<div class="stchip" style="color:${s.c}"><b>${items.length}</b><h3>${s.label}</h3><p>${s.blurb}</p><p class="hint mono" style="font-size:.78rem">${mi.toFixed(1)} mi · ${items.map(x => x.id).join(', ')}</p></div>`;
+}).join('');
+const ORDER = {new:0, modify:1, endorse:2};
+$('#cmp-body').innerHTML = all.slice().sort((a, b) => ORDER[a.status] - ORDER[b.status] || a.id.localeCompare(b.id, undefined, {numeric:true})).map(it =>
+  `<tr tabindex="0" data-id="${it.id}"><td><div class="nm">${esc(it.type === 'greenway' ? it.name : (SHORT[it.id] || it.name))}</div><div style="margin-top:.3rem">${stPill(it)}</div></td><td>${esc(it.city)}<div class="src">${esc(it.src)}</div></td><td>${esc(it.change)}</td></tr>`).join('');
+$('#carried').innerHTML = DATA.carried.map(c => `<div class="card"><h3 style="font-size:1.1rem">${esc(c.n)}</h3><p style="font-size:.9rem">${esc(c.d)}</p></div>`).join('');
+$('#show-status').addEventListener('click', () => setMode('status'));
+
+/* ---------- ledger ---------- */
+$('#ledger-body').innerHTML = DATA.corridors.map(c => `<tr tabindex="0" data-id="${c.id}"><td><div class="nm">${esc(c.name)}</div><div class="ext">${esc(c.ext)}</div><div style="margin-top:.3rem">${stPill(c)}</div></td><td><span class="pill" style="color:${TYPE[c.type].c}">${TYPE[c.type].label}</span></td><td>${esc(c.today)}</td><td class="mono">${esc(c.aadt)}</td><td><span class="pill imp-${c.impact}">${c.impact === 'Study' ? 'Study first' : c.impact}</span></td><td class="mono">${c.phase}</td><td class="mono">${c.miles.toFixed(2)}</td></tr>`).join('');
+$('#green-body').innerHTML = DATA.greenways.map(g => `<tr tabindex="0" data-id="${g.id}"><td><div class="nm">${esc(g.name)}</div><div style="margin-top:.3rem">${stPill(g)}</div></td><td>${g.links.map(esc).join(' → ')}</td><td>${g.via.map(esc).join(', ')}</td><td class="mono">${g.phase}</td><td class="mono">${g.miles.toFixed(2)}</td></tr>`).join('');
+document.querySelectorAll('tbody tr[data-id]').forEach(tr => { const go = () => { if (phase !== 0) document.querySelector('.phase button[data-ph="0"]').click(); select(tr.dataset.id, true); }; tr.addEventListener('click', go); tr.addEventListener('keydown', e => { if (e.key === 'Enter') go(); }); });
+
+/* ---------- intersections ---------- */
+const IS = DATA.intsum;
+$('#ixsum').innerHTML = [
+  [`${IS.vru}/${IS.vru_all}`, `of the city's walking and biking crashes happened at these ${IS.n} intersections`],
+  [`${IS.vru_fsi}/${IS.vru_fsi_all}`, `of the walking and biking crashes that were fatal or serious`],
+  [`${IS.vru_left}/${IS.vru}`, `involved a driver turning left`],
+  [`${Math.round(IS.total / IS.total_all * 100)}%`, `of all crashes in the city, any vehicle (${IS.total.toLocaleString()} of ${IS.total_all.toLocaleString()})`],
+].map(([b, t]) => `<div class="stat"><b>${b}</b><span>${t}</span></div>`).join('');
+const sites = f => DATA.ints.filter(f).map(i => `<a href="#ix-${i.id}" data-ix="${i.id}">${i.rank}</a>`).join(', ');
+const sum = k => DATA.ints.reduce((a, i) => a + i.st[k], 0);
+$('#ixpat').innerHTML = [
+  ['A driver turning left hits someone in the crosswalk or an oncoming rider', sum('vru_left'), 'Protected-only left-turn arrows, a head start for pedestrians (leading interval), and hardened centerlines that slow the turn', sites(i => i.st.vru_left > 0)],
+  ['A driver turning right crosses a crosswalk, trail or bike lane', sum('vru_right'), 'No right turn on red, raised crossings, protected corners and set-back stop bars', sites(i => i.st.vru_right > 0)],
+  ['The crash happened after dark', sum('vru_dark'), 'Lighting upgrades, high-visibility crosswalks, tall reflective posts in place of low markers', sites(i => i.st.vru_dark > 0)],
+].map(([p, n, f, w]) => `<tr><td>${p}</td><td class="mono">${n} of ${IS.vru}</td><td>${f}</td><td class="mono">${w}</td></tr>`).join('');
+
+const HALF = 150 / DATA.mPerUnit, RAD = 76 / DATA.mPerUnit;
+function inset(h) {
+  const vb = `${(h.x - HALF).toFixed(1)} ${(h.y - HALF).toFixed(1)} ${(HALF * 2).toFixed(1)} ${(HALF * 2).toFixed(1)}`;
+  const st = (d, c, w, extra = '') => `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" ${extra}/>`;
+  let o = `<svg viewBox="${vb}" role="img" aria-label="Crash locations within 250 feet of ${esc(h.n)}">`;
+  o += st(DATA.base.local, 'var(--st-local)', 5) + st(DATA.base.minor, 'var(--st-minor)', 7) + st(DATA.base.major, 'var(--st-major)', 9);
+  o += st(DATA.existing.trail, 'var(--exist)', 2.5) + st(DATA.existing.track, 'var(--exist)', 2.5);
+  all.forEach(it => { o += st(it.d + (it.dPlan || ''), TYPE[it.type].c, 4, it.type === 'greenway' ? 'stroke-dasharray="1 6"' : ''); });
+  o += `<circle cx="${h.x}" cy="${h.y}" r="${RAD.toFixed(2)}" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>`;
+  // spread crashes geocoded to the same point so each one shows
+  const seen = {};
+  const place = p => { const k = p[0] + ',' + p[1]; const n = seen[k] = (seen[k] || 0) + 1; const r = 0.42 * Math.sqrt(n - 1), a = (n - 1) * 2.39996; return [p[0] + r * Math.cos(a), p[1] + r * Math.sin(a)]; };
+  const order = {v:0, p:1, b:2};
+  h.pts.slice().sort((a, b) => order[a[2]] - order[b[2]] || a[3] - b[3]).forEach(p => {
+    const [x, y] = place(p);
+    if (p[2] === 'v') { o += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r=".6" fill="var(--ink)" opacity=".5"/>`; return; }
+    const c = p[2] === 'b' ? 'var(--bike)' : 'var(--ped)';
+    o += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${p[3] ? 1.25 : .95}" fill="${p[3] ? c : 'var(--paper)'}" stroke="${c}" stroke-width="2" vector-effect="non-scaling-stroke"/>`;
+  });
+  return o + '</svg>';
+}
+const chip = (n, label, hot) => `<span class="chip${hot ? ' hot' : ''}"><b>${n}</b> ${label}</span>`;
+$('#ixlist').innerHTML = DATA.ints.map(h => {
+  const t = h.st;
+  const chips = [chip(t.vru, `walking/biking crash${t.vru === 1 ? '' : 'es'} (${t.bike} bike, ${t.ped} walking)`, true)];
+  if (t.fatal) chips.push(chip(t.fatal, 'death', true));
+  chips.push(chip(t.fsi, 'fatal or serious, all vehicles', t.fsi > 0));
+  if (t.vru_left) chips.push(chip(t.vru_left, 'driver turning left'));
+  if (t.vru_right) chips.push(chip(t.vru_right, 'driver turning right'));
+  if (t.vru_dark) chips.push(chip(t.vru_dark, 'after dark'));
+  chips.push(chip(t.total, 'crashes of all kinds'));
+  const routes = h.routes.map(id => { const it = all.find(x => x.id === id); return it ? `<button class="rt" data-id="${id}">${esc(it.type === 'greenway' ? it.name : (SHORT[id] || it.name))}</button>` : ''; }).join(' ');
+  return `<article class="ix" id="ix-${h.id}">
+    <div class="ix-map">${inset(h)}<div class="hint">Orange = bike crash, pink = pedestrian, filled = serious or fatal, small dark dots = vehicle only. Dashed circle = 250 ft.</div></div>
+    <div class="ix-body">
+      <div class="ix-head"><span class="num">${h.rank}</span><h3>${esc(h.n)}</h3></div>
+      <p class="hint">${esc(h.context)}</p>
+      <div class="chips">${chips.join('')}</div>
+      <div class="ix-cols">
+        <div><div class="k">What the crash reports show</div><ul>${h.issues.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>
+        <div><div class="k">What we propose, and what each fix answers</div><ul class="fx">${h.fixes.map(f => `<li><span class="f">${esc(f.fix)}</span><span class="a">${esc(f.addr)}</span><span class="e${f.k === 'design' ? ' none' : ''}">${esc(f.ev)}</span></li>`).join('')}</ul></div>
+      </div>
+      ${routes ? `<div class="chips" style="align-items:center"><span class="hint" style="font-size:.8rem">Part of:</span> ${routes}</div>` : ''}
+    </div></article>`;
+}).join('');
+document.querySelectorAll('.rt').forEach(b => b.addEventListener('click', () => { if (phase !== 0) document.querySelector('.phase button[data-ph="0"]').click(); select(b.dataset.id, true); }));
+document.querySelectorAll('a[data-ix]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); document.getElementById('ix-' + a.dataset.ix).scrollIntoView({block:'start'}); }));
+
+/* ---------- phases ---------- */
+const PH = [
+  [1, '2027–2028 · quick-build', 'Paint, posts, planters and signs, mostly within existing pavement and repaving cycles.'],
+  [2, '2028–2031 · capital projects', 'Road diets on state routes with GDOT, the PATH spine, and permanent intersections.'],
+  [3, '2030–2035 · major corridors', 'Federally funded paths and corridor rebuilds after study.'],
+];
+$('#phases').innerHTML = PH.map(([n, when, blurb]) => { const items = all.filter(x => x.phase === n); const mi = items.reduce((a, b) => a + b.miles, 0); return `<div class="ph" style="border-top-color:${n === 1 ? 'var(--accent)' : n === 2 ? 'var(--green)' : 'var(--side)'}"><h3>Phase ${n}</h3><div class="when">${when} · ${mi.toFixed(1)} mi</div><p style="font-size:.9rem">${blurb}</p><ul>${items.map(x => `<li>${esc(x.type === 'greenway' ? x.name : (SHORT[x.id] || x.name))}</li>`).join('')}</ul></div>`; }).join('');
+setMode('type');
+</script>

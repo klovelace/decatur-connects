@@ -1,0 +1,9 @@
+# separate project that lives in this folder
+hillstrom-uplift/
+# raw crash download (includes police narratives); rebuild with src/fetch_data.py
+data/raw/
+# fragment copy of docs/index.html used for the claude.ai artifact
+decatur-connects.html
+.claude/
+__pycache__/
+*.pyc
