@@ -17,6 +17,10 @@
   --sign:#0b6e57; --sign-fg:#ffffff;
   --ok:#2e7d4f; --warn:#b7791f; --hi:#b3261e;
   --s-endorse:#5a7fa8; --s-modify:#c98500; --s-new:#c42f72;
+  --dg-land:#e9ece4; --dg-walk:#d4d2cb; --dg-grass:#c5d7b5; --dg-road:#5d6360; --dg-park:#878c89; --dg-bike:#2f9a62;
+  --dg-isl:#cfcbc2; --dg-white:#ffffff; --dg-yellow:#f2c230; --dg-rail:#4a3f37; --dg-path:#c9b99a; --dg-label:#1d2420;
+  --dg-halo:#ffffff; --dg-call:#c0392b; --dg-raised:#b9714f;
+
   --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
   --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
@@ -27,14 +31,22 @@
   --exist:#cfd8d1; --lane:#7f8a82; --bike:#ff7a45; --ped:#f06292; --hin:#7a3b2c;
   --st-local:#232c27; --st-minor:#2f3a34; --st-major:#3d4a42; --city:#161d19;
   --sign:#1f8a6d; --sign-fg:#ffffff; --ok:#5cc28a; --warn:#e0a84a; --hi:#ff6b5e;
-  --s-endorse:#86a9d4; --s-modify:#f0b23a; --s-new:#f0609e; color-scheme:dark}}
+  --s-endorse:#86a9d4; --s-modify:#f0b23a; --s-new:#f0609e;
+  --dg-land:#1b211d; --dg-walk:#3d433f; --dg-grass:#2c3b2e; --dg-road:#5a605d; --dg-park:#757b77; --dg-bike:#2fa36b;
+  --dg-isl:#525853; --dg-white:#f4f4f2; --dg-yellow:#e8bb2e; --dg-rail:#a2968a; --dg-path:#75684f; --dg-label:#e4ebe5;
+  --dg-halo:#111613; --dg-call:#e0563f; --dg-raised:#a8664a;
+  color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111613; --paper:#171e1a; --ink:#e4ebe5; --muted:#9aa69e; --rule:#2b352f;
   --accent:#2fc29a; --green:#6b9cf2; --side:#b08af0; --study:#7d847f;
   --exist:#cfd8d1; --lane:#7f8a82; --bike:#ff7a45; --ped:#f06292; --hin:#7a3b2c;
   --st-local:#232c27; --st-minor:#2f3a34; --st-major:#3d4a42; --city:#161d19;
   --sign:#1f8a6d; --sign-fg:#ffffff; --ok:#5cc28a; --warn:#e0a84a; --hi:#ff6b5e;
-  --s-endorse:#86a9d4; --s-modify:#f0b23a; --s-new:#f0609e; color-scheme:dark}
+  --s-endorse:#86a9d4; --s-modify:#f0b23a; --s-new:#f0609e;
+  --dg-land:#1b211d; --dg-walk:#3d433f; --dg-grass:#2c3b2e; --dg-road:#5a605d; --dg-park:#757b77; --dg-bike:#2fa36b;
+  --dg-isl:#525853; --dg-white:#f4f4f2; --dg-yellow:#e8bb2e; --dg-rail:#a2968a; --dg-path:#75684f; --dg-label:#e4ebe5;
+  --dg-halo:#111613; --dg-call:#e0563f; --dg-raised:#a8664a;
+  color-scheme:dark}
 *{box-sizing:border-box}
 .mode{display:flex;gap:0;margin-bottom:.8rem;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
 .mode button{flex:1;font:500 .8rem var(--f-body);padding:.45rem .5rem;border:0;background:transparent;color:var(--ink);cursor:pointer}
@@ -152,6 +164,17 @@ td .ext{color:var(--muted);font-size:.82rem}
 .fx .e.none{color:var(--muted)}
 .rt{font:500 .76rem var(--f-mono);padding:.2rem .5rem;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer}
 .rt:hover{background:var(--bg)}
+.ix-dg{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;border-top:1px solid var(--rule);padding-top:1rem}
+.ix-dg figure{margin:0;display:grid;gap:.4rem;align-content:start;min-width:0}
+.ix-dg figcaption{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ix-dg figcaption b{color:var(--ink);font-weight:600}
+.ix-dg svg.dg{display:block;width:100%;height:auto;border-radius:8px}
+.ix-dg .dg-lab{font-family:var(--f-body)}
+.dg-legend{display:flex;flex-wrap:wrap;gap:.45rem 1rem;font-size:.82rem;margin:.6rem 0 1.4rem;padding:.8rem 1rem;background:var(--paper);border:1px solid var(--rule);border-radius:10px}
+.dg-legend span{display:inline-flex;align-items:center;gap:.4rem}
+.dg-legend i{display:inline-block;width:22px;height:12px;border-radius:2px;flex:none}
+.fx .fn{display:inline-grid;place-items:center;width:1.25rem;height:1.25rem;border-radius:50%;background:var(--dg-call);color:var(--dg-halo);font:700 .72rem var(--f-display);margin-right:.35rem;vertical-align:1px}
+@media (max-width:820px){.ix-dg{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:820px){.ix{grid-template-columns:minmax(0,1fr)}.ix-map{max-width:300px}.ix-cols{grid-template-columns:minmax(0,1fr)}.ixsum{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .src{font-size:.86rem;columns:2 340px;column-gap:2rem}
 .src li{break-inside:avoid;margin-bottom:.45rem}
@@ -236,6 +259,22 @@ svg text{font-family:var(--f-body)}
     <thead><tr><th>What went wrong</th><th>Walking and biking crashes at these sites</th><th>What we propose</th><th>Where</th></tr></thead>
     <tbody id="ixpat"></tbody>
   </table></div>
+  <h3 style="margin-top:2rem;margin-bottom:.4rem">Each intersection today and as proposed</h3>
+  <p class="prose hint">Every card has a lane-by-lane plan of the intersection as it is striped today and as this proposal would rebuild it. Streets follow their real alignment from OpenStreetMap. Lane counts, turn lanes, medians, bike facilities and crosswalks were checked against aerial imagery and Google Street View in November 2026. Numbered markers on the proposed plan match the numbered fixes in the card. Signal changes (turn arrows, pedestrian head starts, no turn on red) don't show on a plan view, so their markers sit next to the approach they apply to.</p>
+  <div class="dg-legend" aria-label="Diagram legend">
+    <span><i style="background:var(--dg-road)"></i>Travel lane</span>
+    <span><i style="background:var(--dg-park)"></i>Parking</span>
+    <span><i style="background:var(--dg-bike)"></i>Bike lane or cycle track</span>
+    <span><i style="background:repeating-linear-gradient(45deg,var(--dg-road) 0 3px,var(--dg-white) 3px 4.5px)"></i>Painted buffer / flex posts</span>
+    <span><i style="background:repeating-linear-gradient(45deg,var(--dg-road) 0 3px,var(--dg-yellow) 3px 4.5px)"></i>Painted median</span>
+    <span><i style="background:var(--dg-isl);border:1px solid var(--rule)"></i>Concrete island or curb</span>
+    <span><i style="background:var(--dg-walk)"></i>Sidewalk</span>
+    <span><i style="background:var(--dg-path)"></i>Shared-use path / trail</span>
+    <span><i style="background:repeating-linear-gradient(90deg,var(--dg-white) 0 3px,var(--dg-road) 3px 6px)"></i>Crosswalk</span>
+    <span><i style="background:var(--dg-raised)"></i>Raised crossing</span>
+    <span><i style="background:repeating-linear-gradient(90deg,var(--dg-rail) 0 2px,transparent 2px 4px);height:6px"></i>Railroad</span>
+    <span><i style="background:var(--dg-call);border-radius:50%;width:14px;height:14px"></i>Numbered fix</span>
+  </div>
   <div class="ixlist" id="ixlist"></div>
   <p class="hint" style="margin-top:1rem">Counts include every crash within 250 ft of the centre of each intersection, 2019–2023. A crash near two listed intersections is counted once, at the nearer one. "What the crash reports show" summarises the police narratives for the walking and biking crashes. Percentages are federal averages for each treatment, not predictions for these sites.</p>
 </section>
@@ -677,10 +716,13 @@ $('#ixlist').innerHTML = DATA.ints.map(h => {
       <div class="chips">${chips.join('')}</div>
       <div class="ix-cols">
         <div><div class="k">What the crash reports show</div><ul>${h.issues.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>
-        <div><div class="k">What we propose, and what each fix answers</div><ul class="fx">${h.fixes.map(f => `<li><span class="f">${esc(f.fix)}</span><span class="a">${esc(f.addr)}</span><span class="e${f.k === 'design' ? ' none' : ''}">${esc(f.ev)}</span></li>`).join('')}</ul></div>
+        <div><div class="k">What we propose, and what each fix answers</div><ul class="fx">${h.fixes.map((f, n) => `<li><span class="f"><span class="fn" aria-label="Fix ${n + 1}">${n + 1}</span>${esc(f.fix)}</span><span class="a">${esc(f.addr)}</span><span class="e${f.k === 'design' ? ' none' : ''}">${esc(f.ev)}</span></li>`).join('')}</ul></div>
       </div>
       ${routes ? `<div class="chips" style="align-items:center"><span class="hint" style="font-size:.8rem">Part of:</span> ${routes}</div>` : ''}
-    </div></article>`;
+    </div>
+    ${h.dg ? `<div class="ix-dg"><figure><figcaption><b>Today</b> · as striped in 2026</figcaption>${h.dg.now}</figure>
+      <figure><figcaption><b>Proposed</b> · numbers match the fixes above</figcaption>${h.dg.new}</figure></div>` : ''}
+    </article>`;
 }).join('');
 document.querySelectorAll('.rt').forEach(b => b.addEventListener('click', () => { if (phase !== 0) document.querySelector('.phase button[data-ph="0"]').click(); select(b.dataset.id, true); }));
 document.querySelectorAll('a[data-ix]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); document.getElementById('ix-' + a.dataset.ix).scrollIntoView({block:'start'}); }));

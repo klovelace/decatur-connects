@@ -6,7 +6,8 @@ city's own crash records and adopted plans.
 **Live page:** https://klovelace.github.io/decatur-connects/
 
 The page has an interactive map, a comparison with what the city and GDOT already plan, a crash
-analysis, and a problem-and-fix write-up for each of 12 priority intersections.
+analysis, and a problem-and-fix write-up for each of 12 priority intersections, with lane-by-lane
+plans of each one as striped today and as proposed.
 
 ## What it proposes
 
@@ -55,7 +56,7 @@ figure exists. The same data is in [`data/intersections.csv`](data/intersections
 | 9 | Oakview Rd / Mead Rd | 2 (1 bike, 1 walking) | 1 | 6 | A pedestrian in the marked crosswalk was seriously injured by a driver who did not yield. | Raised crosswalk with a flashing beacon; curb extensions that shorten the crossing and open sight lines |
 | 10 | Church St / Glenlake Commons Dr | 2 (2 bike, 0 walking) | 0 | 7 | Two riders on the cycle track were hit in 2023 by drivers turning right out of Glenlake Commons Dr. | Raised crossing so the bikeway stays level and drivers climb a ramp; stop bar set back behind the bikeway, with green conflict markings and a "look both ways for bikes" sign |
 | 11 | Scott Blvd / Clairemont Ave | 1 (0 bike, 1 walking) | 1 | 150 | A pedestrian in the crosswalk was killed in 2022. | Roundabout or protected-only left turns, decided in the Scott Blvd RAISE study; upgrade lighting on all four corners |
-| 12 | Clairemont Ave / Commerce Dr | 1 (1 bike, 0 walking) | 0 | 130 | A rider in the marked bike lane was hit by a driver turning right across the lane. | Protected corners with a bike signal or set-back crossing; road diets on Clairemont Ave and Commerce Dr east (C1, C3) |
+| 12 | Clairemont Ave / Commerce Dr | 1 (1 bike, 0 walking) | 0 | 130 | A rider in the marked bike lane was hit by a driver turning right across the lane. | Protected corners with a bike signal or set-back crossing; road diet with protected bike lanes on Clairemont Ave north of Commerce Dr (C1) |
 
 Three patterns repeat, and each has a matching treatment:
 
@@ -64,6 +65,23 @@ Three patterns repeat, and each has a matching treatment:
 | Driver turning left into a crosswalk or an oncoming rider | 19 of 47 | Protected-only left-turn arrows, leading pedestrian intervals, hardened centerlines |
 | Driver turning right across a crosswalk, trail or bike lane | 9 of 47 | No right turn on red, raised crossings, protected corners |
 | After dark | 10 of 47 | Lighting, high-visibility crosswalks, tall reflective posts |
+
+## Intersection plans
+
+Each intersection card on the page has two plan views drawn to scale: **Today** and **Proposed**.
+
+- Streets follow their real OpenStreetMap centerlines, so angles, curves and offsets match the ground.
+- Each street segment has a cross-section (lanes, turn lanes, medians, parking, bike lanes, buffers,
+  sidewalks) written in [`src/layouts.py`](src/layouts.py). The existing layouts were checked against
+  Esri and Google aerial imagery and Google Street View in November 2026, and the drawings were
+  overlaid on the aerial photos to check alignment.
+- Proposed protected intersections bend each bike lane out about 15 ft before the corner, leaving
+  concrete corner islands between riders and turning cars, with the bike crossing just inside the
+  crosswalk.
+- Numbered markers on the proposed plan match the numbered fixes in the card. Signal changes
+  (turn arrows, pedestrian head starts, no turn on red) are marked at the approach they apply to.
+- Turn arrows are drawn only where imagery or OSM tags confirm them. Where a lane's arrow could not
+  be read, none is drawn.
 
 ## Method
 
@@ -92,11 +110,13 @@ python src/make_readme.py       # refreshes the numbers in this file
 | `docs/index.html` | The proposal page (self-contained) |
 | `src/build_network.py` | Network routing, crash analysis, page build |
 | `src/intersections.py` | Intersection definitions, issues, fixes and evidence |
+| `src/layouts.py` | Lane-by-lane layouts of each intersection, today and proposed |
+| `src/diagrams.py` | Draws the plan views from OSM geometry and the layouts |
 | `src/fetch_data.py` | Data download |
 | `data/crashes_2019_2023.csv` | All crashes, coded fields only (no narratives) |
 | `data/bike_ped_crashes_2019_2023.csv` | The 93 walking and biking crashes |
 | `data/intersections.csv` | Crash profile and fixes for each priority intersection |
-| `data/snapshot/` | OpenStreetMap streets, city High Injury Network, city limits |
+| `data/snapshot/` | OpenStreetMap streets (citywide and around each intersection), city High Injury Network, city limits |
 
 ## Limits
 

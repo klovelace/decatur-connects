@@ -94,6 +94,24 @@ def main():
                   open(os.path.join(SNAP, 'hin_hrn.geojson'), 'w', encoding='utf-8'))
         json.dump({'type': 'FeatureCollection', 'features': fetch_layer(CITY)},
                   open(os.path.join(SNAP, 'city_limits.geojson'), 'w', encoding='utf-8'))
+        # lane-level detail around each priority intersection (used by src/diagrams.py)
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from layouts import LAYOUTS
+        parts = ''.join(f'way(around:110,{L["center"][0]},{L["center"][1]})["highway"];'
+                        f'way(around:110,{L["center"][0]},{L["center"][1]})["railway"];'
+                        f'node(around:110,{L["center"][0]},{L["center"][1]})["highway"~"traffic_signals|crossing|stop|give_way"];'
+                        for L in LAYOUTS)
+        bx = urllib.parse.urlencode({'data': f'[out:json][timeout:120];({parts});out body geom;'}).encode()
+        for url in OVERPASS * 2:
+            try:
+                raw = get(url, bx)
+                json.loads(raw)['elements']
+                open(os.path.join(SNAP, 'osm_intersections.json'), 'wb').write(raw)
+                print('refreshed intersection snapshot from', url)
+                break
+            except Exception as e:
+                print('overpass failed:', url, e)
+                time.sleep(10)
         body = urllib.parse.urlencode({'data': OSM_QUERY}).encode()
         for attempt, url in enumerate(OVERPASS * 2):
             try:

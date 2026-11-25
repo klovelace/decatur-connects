@@ -46,7 +46,7 @@ INTERSECTIONS = [
     dict(
         id='X2', name='Commerce Dr / W Trinity Pl / Swanton Way',
         centre=(33.77405, -84.29890), routes=['G5'],
-        context='Two signals 300 ft apart on the Commerce Dr cycle track built from the 2016 PATH plan, on the west edge of downtown.',
+        context='Two signals about 375 ft apart on the Commerce Dr cycle track built from the 2016 PATH plan, on the west edge of downtown.',
         issues=[
             'At least four pedestrians were hit in the crosswalk by drivers turning left from Swanton Way or W Trinity Pl. Several had the walk signal.',
             'Two of the people hit were using wheelchairs.',
@@ -210,7 +210,7 @@ INTERSECTIONS = [
         ],
         fixes=[
             ('Protected corners with a bike signal or set-back crossing', 'Right turns across the bike lane', 'design'),
-            ('Road diets on Clairemont Ave and Commerce Dr east (C1, C3)', 'Lane changing and weaving behind the sideswipe and rear-end crashes', 'diet'),
+            ('Road diet with protected bike lanes on Clairemont Ave north of Commerce Dr (C1)', 'Lane changing and weaving behind the sideswipe and rear-end crashes', 'diet'),
             ('Pedestrian scramble or leading pedestrian interval, as in the 2026 quick-build', 'Heavy foot traffic crossing turning traffic', 'lpi'),
         ]),
 ]

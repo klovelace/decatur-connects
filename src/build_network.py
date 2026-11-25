@@ -21,6 +21,8 @@ import networkx as nx
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from intersections import INTERSECTIONS, EVIDENCE, RADIUS_M
+import diagrams
+from layouts import LAYOUTS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, 'data')
@@ -496,6 +498,16 @@ for k, (d, c) in enumerate(SITES):
                             fixes=[dict(fix=f, addr=a_, ev=EVIDENCE[e], k=e) for f, a_, e in d['fixes']]))
 # rank: most walking/biking crashes first, then most serious
 out['ints'].sort(key=lambda i: (-i['st']['vru'], -i['st']['vru_fsi'], -i['st']['total']))
+
+# lane-level plan diagrams, today and as proposed (src/diagrams.py, src/layouts.py)
+osm_x = json.load(open(os.path.join(SNAP, 'osm_intersections.json'), encoding='utf-8'))['elements']
+lay = {L['id']: L for L in LAYOUTS}
+for i in out['ints']:
+    L = lay.get(i['id'])
+    if L:
+        i['dg'] = dict(now=diagrams.render_site(osm_x, L, 'now'), new=diagrams.render_site(osm_x, L, 'new'),
+                       aspect=round(L['half'][1] / L['half'][0], 3))
+print('diagrams', sum(len(i.get('dg', {}).get('now', '')) + len(i.get('dg', {}).get('new', '')) for i in out['ints']) // 1024, 'KB', file=sys.stderr)
 for n, i in enumerate(out['ints'], 1):
     i['rank'] = n
 allvru = [f for f in crashes if f['properties']['crash_mode'] in ('Bike', 'Ped')]

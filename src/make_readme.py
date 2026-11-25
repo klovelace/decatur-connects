@@ -36,7 +36,8 @@ A citizen proposal for a connected, protected bike network in Decatur, Georgia, 
 city's own crash records and adopted plans.
 
 {live}The page has an interactive map, a comparison with what the city and GDOT already plan, a crash
-analysis, and a problem-and-fix write-up for each of {S['n']} priority intersections.
+analysis, and a problem-and-fix write-up for each of {S['n']} priority intersections, with lane-by-lane
+plans of each one as striped today and as proposed.
 
 ## What it proposes
 
@@ -81,6 +82,23 @@ Three patterns repeat, and each has a matching treatment:
 | Driver turning right across a crosswalk, trail or bike lane | {right} of {S['vru']} | No right turn on red, raised crossings, protected corners |
 | After dark | {S['vru_dark']} of {S['vru']} | Lighting, high-visibility crosswalks, tall reflective posts |
 
+## Intersection plans
+
+Each intersection card on the page has two plan views drawn to scale: **Today** and **Proposed**.
+
+- Streets follow their real OpenStreetMap centerlines, so angles, curves and offsets match the ground.
+- Each street segment has a cross-section (lanes, turn lanes, medians, parking, bike lanes, buffers,
+  sidewalks) written in [`src/layouts.py`](src/layouts.py). The existing layouts were checked against
+  Esri and Google aerial imagery and Google Street View in November 2026, and the drawings were
+  overlaid on the aerial photos to check alignment.
+- Proposed protected intersections bend each bike lane out about 15 ft before the corner, leaving
+  concrete corner islands between riders and turning cars, with the bike crossing just inside the
+  crosswalk.
+- Numbered markers on the proposed plan match the numbered fixes in the card. Signal changes
+  (turn arrows, pedestrian head starts, no turn on red) are marked at the approach they apply to.
+- Turn arrows are drawn only where imagery or OSM tags confirm them. Where a lane's arrow could not
+  be read, none is drawn.
+
 ## Method
 
 1. **Crash data.** All {S['total_all']:,} crash records behind the city's 2025 Safe Streets Safety Action Plan,
@@ -108,11 +126,13 @@ python src/make_readme.py       # refreshes the numbers in this file
 | `docs/index.html` | The proposal page (self-contained) |
 | `src/build_network.py` | Network routing, crash analysis, page build |
 | `src/intersections.py` | Intersection definitions, issues, fixes and evidence |
+| `src/layouts.py` | Lane-by-lane layouts of each intersection, today and proposed |
+| `src/diagrams.py` | Draws the plan views from OSM geometry and the layouts |
 | `src/fetch_data.py` | Data download |
 | `data/crashes_2019_2023.csv` | All crashes, coded fields only (no narratives) |
 | `data/bike_ped_crashes_2019_2023.csv` | The {S['vru_all']} walking and biking crashes |
 | `data/intersections.csv` | Crash profile and fixes for each priority intersection |
-| `data/snapshot/` | OpenStreetMap streets, city High Injury Network, city limits |
+| `data/snapshot/` | OpenStreetMap streets (citywide and around each intersection), city High Injury Network, city limits |
 
 ## Limits
 
